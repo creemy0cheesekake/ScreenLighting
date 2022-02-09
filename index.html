@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+	<head>
+		<meta charset="UTF-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+		<title>Easy Lighting</title>
+		<style>
+			.row {
+				flex-direction: row;
+				width: 99vw;
+				display: flex;
+			}
+			input {
+				flex: 1;
+				flex-basis: 100%;
+			}
+			p {
+				flex: 1;
+				font-family: sans-serif;
+			}
+			.hi {
+				width: 100px;
+				height: 100px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="row">
+			<p>H</p>
+			<input id="h" type="range" oninput="changeColor()" max="359" />
+		</div>
+		<div class="row">
+			<p>S</p>
+			<input id="s" type="range" oninput="changeColor()" max="100" />
+		</div>
+		<div class="row">
+			<p>L</p>
+			<input id="l" type="range" oninput="changeColor()" max="99" />
+		</div>
+		<div class="hi"></div>
+		<script>
+			const changeColor = () => {
+				let h = document.getElementById("h").value;
+				let s = document.getElementById("s").value;
+				let l = document.getElementById("l").value;
+				l /= 100;
+				const a = (s * Math.min(l, 1 - l)) / 100;
+				const f = n => {
+					const k = (n + h / 30) % 12;
+					const color =
+						l - a * Math.max(Math.min(k - 3, 9 - k, 1), -1);
+					return Math.round(255 * color)
+						.toString(16)
+						.padStart(2, "0");
+				};
+				document.querySelector("html").style.backgroundColor = `#${f(
+					0
+				)}${f(8)}${f(4)}`;
+			};
+		</script>
+	</body>
+</html>
